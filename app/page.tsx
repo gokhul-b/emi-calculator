@@ -25,17 +25,16 @@ export default function Home() {
   const [isDownloading, setIsDownloading] = useState(false);
   const [emiDetails, setEmiDetails] = useState<EmiMonthDetail[]>([]);
 
-  const pdfData: PdfData = {
-    formData: form,
-    emi: emi,
-    totIntPay: totIntPay,
-    totPay: totPay,
-    tableId: "emi-table",
-  };
-
   const handleDownload = async () => {
     setIsDownloading(true);
     try {
+      const pdfData: PdfData = {
+        formData: form,
+        emi: emi,
+        totIntPay: totIntPay,
+        totPay: totPay,
+        tableId: "emi-table",
+      };
       await downloadPDF(pdfData);
     } catch (e) {
       console.error(e);
