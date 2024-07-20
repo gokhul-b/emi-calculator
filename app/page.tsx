@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 // import { ScrollArea } from "@/components/ui/scroll-area";
 import { EmiInput, EmiMonthDetail, PdfData } from "@/type";
 import { useState } from "react";
-import { downloadPDF, sendPDFToServer } from "./actions";
+import { downloadPDF } from "./actions";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { DatePickerForm } from "@/components/DatePickerForm";
 

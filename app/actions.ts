@@ -6,148 +6,148 @@ const timesNewRomanFont = "data:font/truetype;charset=utf-8;base64,AAEAAA...";
 
 // import { generatePDFBlob } from "./path-to-your-pdf-function";
 
-export const sendPDFToServer = async (pdfBlob: Blob) => {
-  const formData = new FormData();
-  formData.append("pdf", pdfBlob, "emi-details.pdf");
+// export const sendPDFToServer = async (pdfBlob: Blob) => {
+//   const formData = new FormData();
+//   formData.append("pdf", pdfBlob, "emi-details.pdf");
 
-  const response = await fetch("/api/send-pdf", {
-    method: "POST",
-    body: formData,
-  });
+//   const response = await fetch("/api/send-pdf", {
+//     method: "POST",
+//     body: formData,
+//   });
 
-  if (!response.ok) {
-    console.error("Failed to send PDF to server");
-  } else {
-    console.log("PDF sent successfully");
-  }
-};
+//   if (!response.ok) {
+//     console.error("Failed to send PDF to server");
+//   } else {
+//     console.log("PDF sent successfully");
+//   }
+// };
 
-export const generatePDFBlob = async (
-  pdfData: PdfData
-): Promise<Blob | null> => {
-  const input = document.getElementById(pdfData.tableId);
+// export const generatePDFBlob = async (
+//   pdfData: PdfData
+// ): Promise<Blob | null> => {
+//   const input = document.getElementById(pdfData.tableId);
 
-  if (!input) {
-    console.error(`Element with id "${pdfData.tableId}" not found.`);
-    return null;
-  }
+//   if (!input) {
+//     console.error(`Element with id "${pdfData.tableId}" not found.`);
+//     return null;
+//   }
 
-  const pdf = new jsPDF("p", "mm", "a4");
-  const margin = 10;
-  const pageWidth = pdf.internal.pageSize.getWidth() - margin * 2;
-  const pageHeight = pdf.internal.pageSize.getHeight() - margin * 2;
+//   const pdf = new jsPDF("p", "mm", "a4");
+//   const margin = 10;
+//   const pageWidth = pdf.internal.pageSize.getWidth() - margin * 2;
+//   const pageHeight = pdf.internal.pageSize.getHeight() - margin * 2;
 
-  // Add custom font
-  pdf.addFileToVFS("TimesNewRoman.ttf", timesNewRomanFont);
-  pdf.addFont("TimesNewRoman.ttf", "TimesNewRoman", "normal");
-  pdf.setFont("TimesNewRoman");
+//   // Add custom font
+//   pdf.addFileToVFS("TimesNewRoman.ttf", timesNewRomanFont);
+//   pdf.addFont("TimesNewRoman.ttf", "TimesNewRoman", "normal");
+//   pdf.setFont("TimesNewRoman");
 
-  // Add additional details to the first page
-  pdf.setFont("TimesNewRoman", "normal", 500);
-  pdf.setFontSize(16);
-  pdf.text("EMI Details Report", margin, margin + 10);
+//   // Add additional details to the first page
+//   pdf.setFont("TimesNewRoman", "normal", 500);
+//   pdf.setFontSize(16);
+//   pdf.text("EMI Details Report", margin, margin + 10);
 
-  pdf.setFontSize(8);
-  pdf.setTextColor("#6b7280");
-  pdf.text(
-    "Generated on: " + new Date().toLocaleDateString(),
-    margin,
-    margin + 15
-  );
+//   pdf.setFontSize(8);
+//   pdf.setTextColor("#6b7280");
+//   pdf.text(
+//     "Generated on: " + new Date().toLocaleDateString(),
+//     margin,
+//     margin + 15
+//   );
 
-  pdf.setFontSize(12);
-  pdf.text("Loan Amount: ", margin, margin + 30);
-  pdf.setTextColor("#111827");
-  pdf.setFontSize(14);
-  pdf.text(
-    `${pdfData.formData.loanAmount.toLocaleString("en-IN")} rs`,
-    margin + 30,
-    margin + 30
-  );
+//   pdf.setFontSize(12);
+//   pdf.text("Loan Amount: ", margin, margin + 30);
+//   pdf.setTextColor("#111827");
+//   pdf.setFontSize(14);
+//   pdf.text(
+//     `${pdfData.formData.loanAmount.toLocaleString("en-IN")} rs`,
+//     margin + 30,
+//     margin + 30
+//   );
 
-  pdf.setTextColor("#6b7280");
-  pdf.setFontSize(12);
-  pdf.text("Interest Rate: ", margin, margin + 40);
-  pdf.setTextColor("#111827");
-  pdf.setFontSize(14);
-  pdf.text(
-    `${pdfData.formData.interestRate.toLocaleString("en-IN")} %`,
-    margin + 30,
-    margin + 40
-  );
+//   pdf.setTextColor("#6b7280");
+//   pdf.setFontSize(12);
+//   pdf.text("Interest Rate: ", margin, margin + 40);
+//   pdf.setTextColor("#111827");
+//   pdf.setFontSize(14);
+//   pdf.text(
+//     `${pdfData.formData.interestRate.toLocaleString("en-IN")} %`,
+//     margin + 30,
+//     margin + 40
+//   );
 
-  pdf.setTextColor("#6b7280");
-  pdf.setFontSize(12);
-  pdf.text("Loan Tenure: ", margin, margin + 50);
-  pdf.setTextColor("#111827");
-  pdf.setFontSize(14);
-  pdf.text(
-    `${pdfData.formData.loanTenure.toLocaleString("en-IN")} Yrs / ${
-      pdfData.formData.loanTenure * 12
-    } Mo`,
-    margin + 30,
-    margin + 50
-  );
+//   pdf.setTextColor("#6b7280");
+//   pdf.setFontSize(12);
+//   pdf.text("Loan Tenure: ", margin, margin + 50);
+//   pdf.setTextColor("#111827");
+//   pdf.setFontSize(14);
+//   pdf.text(
+//     `${pdfData.formData.loanTenure.toLocaleString("en-IN")} Yrs / ${
+//       pdfData.formData.loanTenure * 12
+//     } Mo`,
+//     margin + 30,
+//     margin + 50
+//   );
 
-  pdf.setTextColor("#6b7280");
-  pdf.setFontSize(12);
-  pdf.text("Loan Emi: ", margin + 70, margin + 30);
-  pdf.setTextColor("#111827");
-  pdf.setFontSize(14);
-  pdf.text(
-    `${parseInt(pdfData.emi).toLocaleString("en-IN")} rs`,
-    margin + 135,
-    margin + 30
-  );
+//   pdf.setTextColor("#6b7280");
+//   pdf.setFontSize(12);
+//   pdf.text("Loan Emi: ", margin + 70, margin + 30);
+//   pdf.setTextColor("#111827");
+//   pdf.setFontSize(14);
+//   pdf.text(
+//     `${parseInt(pdfData.emi).toLocaleString("en-IN")} rs`,
+//     margin + 135,
+//     margin + 30
+//   );
 
-  pdf.setTextColor("#6b7280");
-  pdf.setFontSize(12);
-  pdf.text("Total Interest Payable: ", margin + 70, margin + 40);
-  pdf.setTextColor("#111827");
-  pdf.setFontSize(14);
-  pdf.text(
-    `${parseInt(pdfData.totIntPay).toLocaleString("en-IN")} rs`,
-    margin + 135,
-    margin + 40
-  );
+//   pdf.setTextColor("#6b7280");
+//   pdf.setFontSize(12);
+//   pdf.text("Total Interest Payable: ", margin + 70, margin + 40);
+//   pdf.setTextColor("#111827");
+//   pdf.setFontSize(14);
+//   pdf.text(
+//     `${parseInt(pdfData.totIntPay).toLocaleString("en-IN")} rs`,
+//     margin + 135,
+//     margin + 40
+//   );
 
-  pdf.setTextColor("#6b7280");
-  pdf.setFontSize(12);
-  pdf.text("Total Payment (Principal + Interest): ", margin + 70, margin + 50);
-  pdf.setTextColor("#111827");
-  pdf.setFontSize(14);
-  pdf.text(
-    `${parseInt(pdfData.totPay).toLocaleString("en-IN")} rs`,
-    margin + 135,
-    margin + 50
-  );
+//   pdf.setTextColor("#6b7280");
+//   pdf.setFontSize(12);
+//   pdf.text("Total Payment (Principal + Interest): ", margin + 70, margin + 50);
+//   pdf.setTextColor("#111827");
+//   pdf.setFontSize(14);
+//   pdf.text(
+//     `${parseInt(pdfData.totPay).toLocaleString("en-IN")} rs`,
+//     margin + 135,
+//     margin + 50
+//   );
 
-  pdf.setFontSize(16);
-  pdf.text("Month-wise EMI Payments", margin, margin + 70);
+//   pdf.setFontSize(16);
+//   pdf.text("Month-wise EMI Payments", margin, margin + 70);
 
-  const canvas = await html2canvas(input);
-  const imgData = canvas.toDataURL("image/png");
-  const imgWidth = pageWidth;
-  const imgHeight = (canvas.height * imgWidth) / canvas.width;
+//   const canvas = await html2canvas(input);
+//   const imgData = canvas.toDataURL("image/png");
+//   const imgWidth = pageWidth;
+//   const imgHeight = (canvas.height * imgWidth) / canvas.width;
 
-  let position = margin + 80;
+//   let position = margin + 80;
 
-  pdf.addImage(imgData, "PNG", margin, position, imgWidth, imgHeight);
+//   pdf.addImage(imgData, "PNG", margin, position, imgWidth, imgHeight);
 
-  let heightLeft = imgHeight + position + margin - pageHeight;
+//   let heightLeft = imgHeight + position + margin - pageHeight;
 
-  while (heightLeft > 0) {
-    pdf.addPage();
-    position = margin;
-    pdf.addImage(imgData, "PNG", margin, position, imgWidth, imgHeight);
-    heightLeft -= pageHeight;
-  }
+//   while (heightLeft > 0) {
+//     pdf.addPage();
+//     position = margin;
+//     pdf.addImage(imgData, "PNG", margin, position, imgWidth, imgHeight);
+//     heightLeft -= pageHeight;
+//   }
 
-  // Convert PDF to Blob
-  const pdfBlob = pdf.output("blob");
+//   // Convert PDF to Blob
+//   const pdfBlob = pdf.output("blob");
 
-  return pdfBlob;
-};
+//   return pdfBlob;
+// };
 
 export const downloadPDF = async (pdfData: PdfData) => {
   const input = document.getElementById(pdfData.tableId);
